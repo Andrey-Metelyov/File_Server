@@ -82,6 +82,15 @@ files:
         }
     }
   learner_created: false
+- name: fileserver.db
+  visible: true
+  learner_created: true
+- name: src/client/Main.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/52/stages/284/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Thu, 09 Sep 2021 13:32:28 UTC
 record: -1
