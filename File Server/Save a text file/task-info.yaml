@@ -238,6 +238,48 @@ files:
     }
 
   learner_created: false
+- name: src/client/Main.java
+  visible: true
+  text: |
+    package client;
+
+    import java.io.DataInputStream;
+    import java.io.DataOutputStream;
+    import java.io.IOException;
+    import java.net.InetAddress;
+    import java.net.Socket;
+
+    public class Main {
+
+        public static void main(String[] args) {
+            System.out.println("Client started!");
+            String address = "127.0.0.1";
+            int port = 23456;
+            try (Socket socket = new Socket(InetAddress.getByName(address), port);
+            DataInputStream input = new DataInputStream(socket.getInputStream());
+            DataOutputStream output = new DataOutputStream(socket.getOutputStream())) {
+                String command = "Give me everything you have!";
+                output.writeUTF(command);
+                System.out.printf("Sent: %s\n", command);
+
+                String answer = input.readUTF();
+                System.out.printf("Received: %s\n", answer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+  learner_created: true
+- name: fileserver.db
+  visible: true
+  learner_created: true
+- name: src/server/Server.java
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/52/stages/285/implement#comment
 status: Unchecked
+feedback:
+  message: No tests have run. For more information, see <a href="https://plugins.jetbrains.com/plugin/10081-edutools/docs/troubleshooting-guide.html#no_tests_have_run">the
+    Troubleshooting guide</a>
+  time: Fri, 10 Sep 2021 01:45:07 UTC
 record: -1
