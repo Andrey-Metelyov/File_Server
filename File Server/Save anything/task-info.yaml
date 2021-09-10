@@ -296,6 +296,66 @@ files:
 
 
   learner_created: false
+- name: src/client/Main.java
+  visible: true
+  text: |
+    package client;
+
+    import java.io.DataInputStream;
+    import java.io.DataOutputStream;
+    import java.io.IOException;
+    import java.net.InetAddress;
+    import java.net.Socket;
+    import java.util.Scanner;
+
+    public class Main {
+
+        public static void main(String[] args) {
+            System.out.println("Client started!");
+            String address = "127.0.0.1";
+            int port = 23456;
+            try (Socket socket = new Socket(InetAddress.getByName(address), port);
+            DataInputStream input = new DataInputStream(socket.getInputStream());
+            DataOutputStream output = new DataOutputStream(socket.getOutputStream())) {
+                System.out.println("Enter action (1 - get a file, 2 - create a file, 3 - delete a file):");
+                Scanner scanner = new Scanner(System.in);
+                String command = scanner.nextLine();
+                switch (command) {
+                    case "1": {
+                        System.out.print("Enter filename: ");
+                        String filename = scanner.nextLine();
+                        output.writeUTF("GET " + filename);
+                        break;
+                    }
+                    case "2": {
+                        System.out.print("Enter filename: ");
+                        String filename = scanner.nextLine();
+                        System.out.print("Enter file content: ");
+                        String content = scanner.nextLine();
+                        output.writeUTF("PUT " + filename + " " + content);
+                        break;
+                    }
+                    case "3": {
+                        System.out.print("Enter filename: ");
+                        String filename = scanner.nextLine();
+                        output.writeUTF("DELETE " + filename);
+                        break;
+                    }
+                    case "exit":
+                        output.writeUTF("exit");
+                        return;
+                }
+                String answer = input.readUTF();
+                System.out.printf("Received: %s\n", answer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+  learner_created: true
+- name: fileserver.db
+  visible: true
+  learner_created: true
 - name: test/Utils.java
   visible: false
   text: |+
@@ -413,6 +473,159 @@ files:
 
 
   learner_created: false
+- name: src/common/Response.java
+  visible: true
+  learner_created: true
+- name: src/common/Request.java
+  visible: true
+  learner_created: true
+- name: src/server/FileServer.java
+  visible: true
+  text: |
+    package server;
+
+    import java.io.DataInputStream;
+    import java.io.DataOutputStream;
+    import java.io.IOException;
+    import java.net.InetAddress;
+    import java.net.ServerSocket;
+    import java.net.Socket;
+
+    public class Server {
+        private final String address;
+        private final int port;
+        ServerSocket server;
+        Socket socket = null;
+        DataInputStream input = null;
+        DataOutputStream output = null;
+
+        Server(String address, int port) {
+            this.address = address;
+            this.port = port;
+        }
+
+        boolean start() {
+            try {
+                server = new ServerSocket(port, 50, InetAddress.getByName(address));
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            System.out.println("Server started!");
+            return true;
+        }
+
+        boolean accept() {
+            try {
+                socket = server.accept();
+                input = new DataInputStream(socket.getInputStream());
+                output = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        void shutdown() {
+            try {
+                server.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public String read() {
+            try {
+                return input.readUTF();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        public void send(String string) {
+            try {
+                output.writeUTF(string);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+  learner_created: true
+- name: src/common/Session.java
+  visible: true
+  learner_created: true
+- name: src/server/data/123
+  visible: true
+  learner_created: true
+- name: src/server/data/1631252909321
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253007077
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253070129
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253172140
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253309562
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253363995
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253562912
+  visible: true
+  learner_created: true
+- name: src/server/data/1631253683207
+  visible: true
+  learner_created: true
+- name: src/server/data/1631254127112
+  visible: true
+  learner_created: true
+- name: src/server/data/1631254234931
+  visible: true
+  learner_created: true
+- name: src/server/data/1631255234417
+  visible: true
+  learner_created: true
+- name: src/server/data/1631255357208
+  visible: true
+  learner_created: true
+- name: src/server/data/1631255847123
+  visible: true
+  learner_created: true
+- name: src/server/data/1631255937298
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256048902
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256182383
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256372483
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256406155
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256508391
+  visible: true
+  learner_created: true
+- name: server.conf
+  visible: true
+  learner_created: true
+- name: src/server/data/1631256763212
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/52/stages/286/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Fri, 10 Sep 2021 06:57:05 UTC
 record: -1

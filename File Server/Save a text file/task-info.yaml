@@ -277,9 +277,8 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/52/stages/285/implement#comment
-status: Unchecked
+status: Solved
 feedback:
-  message: No tests have run. For more information, see <a href="https://plugins.jetbrains.com/plugin/10081-edutools/docs/troubleshooting-guide.html#no_tests_have_run">the
-    Troubleshooting guide</a>
-  time: Fri, 10 Sep 2021 01:45:07 UTC
-record: -1
+  message: Congratulations!
+  time: Fri, 10 Sep 2021 02:02:37 UTC
+record: 3
